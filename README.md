@@ -1,5 +1,7 @@
 # Openshift Default Security Context Constraints (SCC) Object YAML files
 
+**NOTE: THIS IS STILL A WORK IN PROGRESS AS I STILL TRANSLATING ANNONATIONS. PLEASE DO NOT USE THIS IN PRODUCTION OR SENSITIVE SYSTEMS.**
+
 YAML files that create Pod Security Policy objects that are based upon the default SCC objects for an OpenShift installation.
 
 ## SCC Descriptions
