@@ -1,0 +1,35 @@
+---
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: anyuid
+  annotations:
+    kubernetes.io/description: anyuid provides all features of the restricted SCC
+      but allows users to run with any UID and any GID.
+spec:
+  privileged: false
+  hostIPC: false
+  hostPID: false
+  hostNetwork: false
+  hostPorts:
+  - min: 0
+    max: 65535
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+  fsGroup:
+    type: RunAsAny
+  readOnlyRootFilesystem: false
+  runAsUser:
+    type: RunAsAny
+  supplementalGroups:
+    type: RunAsAny
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+  - MKNOD
+  seLinuxContext:
+    type: MustRunAs

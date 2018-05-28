@@ -1,0 +1,51 @@
+---
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: privileged
+  annotations:
+    kubernetes.io/description: 'privileged allows access to all privileged and host
+      features and the ability to run as any user, any group, any fsGroup, and with
+      any SELinux context.  WARNING: this is the most relaxed SCC and should be used
+      only for cluster administration. Grant with caution.'
+spec:
+  privileged: true
+  hostIPC: true
+  hostPID: true
+  hostNetwork: true
+  hostPorts:
+  - min: 0
+    max: 65535
+  volumes:
+  - '*'
+
+  fsGroup:
+    type: RunAsAny
+  readOnlyRootFilesystem: false
+  runAsUser:
+    type: RunAsAny
+  supplementalGroups:
+    type: RunAsAny
+  allowPrivilegeEscalation: true
+  allowedCapabilities:
+  - '*'
+  seLinuxContext:
+    type: RunAsAny
+  
+  allowHostDirVolumePlugin: true
+  allowPrivilegedContainer: true
+  groups:
+  - system:cluster-admins
+  - system:nodes
+  - system:masters
+  seccompProfiles:
+  - '*'
+  users:
+  - system:admin
+  - system:serviceaccount:openshift-infra:build-controller
+  - system:serviceaccount:default:pvinstaller
+  - system:serviceaccount:default:registry
+  - system:serviceaccount:default:router
+  allowedFlexVolumes: null
+  defaultAddCapabilities: null
+  requiredDropCapabilities: null

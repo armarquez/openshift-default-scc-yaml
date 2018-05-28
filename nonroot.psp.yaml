@@ -1,0 +1,45 @@
+---
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: nonroot
+  annotations:
+    kubernetes.io/description: nonroot provides all features of the restricted SCC
+      but allows users to run with any non-root UID.  The user must specify the UID
+      or it must be specified on the by the manifest of the container runtime.
+spec:
+  privileged: false
+  hostIPC: false
+  hostPID: false
+  hostNetwork: false
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+
+  fsGroup:
+    type: RunAsAny
+  readOnlyRootFilesystem: false
+  runAsUser:
+    type: MustRunAsNonRoot
+  supplementalGroups:
+    type: RunAsAny
+  allowPrivilegedContainer: false
+  requiredDropCapabilities:
+  - KILL
+  - MKNOD
+  - SETUID
+  - SETGID
+  seLinuxContext:
+    type: MustRunAs
+
+  allowHostDirVolumePlugin: false
+  allowedCapabilities: null
+  allowedFlexVolumes: null
+  defaultAddCapabilities: null
+  groups: []
+  users: []
+  

@@ -1,0 +1,52 @@
+---
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: hostaccess
+  annotations:
+    kubernetes.io/description: 'hostaccess allows access to all host namespaces but
+      still requires pods to be run with a UID and SELinux context that are allocated
+      to the namespace. WARNING: this SCC allows host access to namespaces, file systems,
+      and PIDS.  It should only be used by trusted pods.  Grant with caution.'
+spec:
+  privileged: false
+  hostIPC: true
+  hostPID: true
+  hostNetwork: true
+  hostPorts:
+  - min: 0
+    max: 65535
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - hostPath
+  - persistentVolumeClaim
+  - projected
+  - secret
+
+  fsGroup:
+    type: MustRunAs
+  readOnlyRootFilesystem: false
+  runAsUser:
+    type: MustRunAsRange
+  supplementalGroups:
+    type: RunAsAny
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+  - KILL
+  - MKNOD
+  - SETUID
+  - SETGID
+  seLinuxContext:
+    type: MustRunAs
+
+  allowHostDirVolumePlugin: true
+  allowPrivilegedContainer: false
+  
+  groups: []
+  users: []
+  
+  allowedCapabilities: null
+  allowedFlexVolumes: null
+  defaultAddCapabilities: null

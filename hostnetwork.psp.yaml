@@ -1,0 +1,48 @@
+---
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  annotations:
+    name: hostnetwork
+    kubernetes.io/description: hostnetwork allows using host networking and host ports
+      but still requires pods to be run with a UID and SELinux context that are allocated
+      to the namespace.
+spec:
+  privileged: false
+  hostIPC: false
+  hostPID: false
+  hostNetwork: true
+  hostPorts:
+  - min: 0
+    max: 65535
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+
+  fsGroup:
+    type: MustRunAs
+  readOnlyRootFilesystem: false
+  runAsUser:
+    type: MustRunAsRange
+  supplementalGroups:
+    type: MustRunAs
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+  - KILL
+  - MKNOD
+  - SETUID
+  - SETGID
+  seLinuxContext:
+    type: MustRunAs
+
+  allowHostDirVolumePlugin: false
+  allowPrivilegedContainer: false
+  groups: []
+  users: []
+  allowedCapabilities: null
+  allowedFlexVolumes: null
+  defaultAddCapabilities: null

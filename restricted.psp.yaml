@@ -1,0 +1,46 @@
+---
+apiVersion: extensions/v1beta1
+kind: PodSecurityPolicy
+metadata:
+  name: restricted
+  annotations:
+    kubernetes.io/description: restricted denies access to all host features and requires
+      pods to be run with a UID, and SELinux context that are allocated to the namespace.  This
+      is the most restrictive SCC and it is used by default for authenticated users.
+spec:
+  privileged: false
+  hostIPC: false
+  hostPID: false
+  hostNetwork: false
+  volumes:
+  - configMap
+  - downwardAPI
+  - emptyDir
+  - persistentVolumeClaim
+  - projected
+  - secret
+  
+  fsGroup:
+    type: MustRunAs
+  readOnlyRootFilesystem: false
+  runAsUser:
+    type: MustRunAsRange
+  supplementalGroups:
+    type: RunAsAny
+  allowPrivilegeEscalation: false
+  requiredDropCapabilities:
+  - KILL
+  - MKNOD
+  - SETUID
+  - SETGID
+  seLinuxContext:
+    type: MustRunAs
+
+  groups:
+  - system:authenticated
+  users: []
+  allowHostDirVolumePlugin: false
+  allowPrivilegedContainer: false
+  allowedCapabilities: null
+  allowedFlexVolumes: null
+  defaultAddCapabilities: null
